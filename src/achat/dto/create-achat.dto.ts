@@ -1,1 +1,7 @@
-export class CreateAchatDto {}
+export class CreateAchatDto {
+
+
+
+
+    
+}

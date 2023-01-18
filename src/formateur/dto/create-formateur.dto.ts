@@ -1,1 +1,6 @@
-export class CreateFormateurDto {}
+export class CreateFormateurDto {
+
+    
+
+
+}

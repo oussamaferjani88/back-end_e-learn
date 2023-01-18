@@ -1,4 +1,3 @@
-import { Formateur } from "src/formateur/entities/formateur.entity";
 import { Formation } from "src/formation/entities/formation.entity";
 import { Entity , Column , PrimaryGeneratedColumn, ManyToOne, OneToOne, OneToMany } from "typeorm";
 
@@ -10,7 +9,7 @@ export class Categorie {
     id: number;
 
     @Column()
-    NomCat : string ; 
+    nomCat : string ; 
 
     @OneToMany(type => Formation , formation => formation.categorie )
     formations : Formation[];

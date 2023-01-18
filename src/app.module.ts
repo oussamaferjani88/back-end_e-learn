@@ -18,11 +18,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     ConfigModule.forRoot({ isGlobal: true, }),
     TypeOrmModule.forRoot({
     type : 'postgres',
-    host : process.env.POSTGRES_HOST,
-    port : parseInt(<string>process.env.POSTGRES_PORT),
-    username : process.env.POSTGRES_USER,
-    password : process.env.POSTGRES_PASSWORD,
-    database : process.env.POSTGRES_DATABASE,
+    host :"127.0.0.1" ,
+    port :5432 ,
+    username : "postgres",
+    password : "oussama",
+    database : "e-learn",
     // autoLoadEntities : true,
     // synchronize : true,
 

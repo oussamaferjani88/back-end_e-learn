@@ -1,20 +1,30 @@
-import { Entity , Column , PrimaryGeneratedColumn, ManyToOne, OneToOne, OneToMany } from "typeorm";
-import { Formation } from "src/formation/entities/formation.entity";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToOne,
+  OneToMany,
+} from 'typeorm';
+import { Formation } from 'src/formation/entities/formation.entity';
 
 @Entity()
 export class Formateur {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  Nom_Complet: string;
 
-    @Column() 
-    Nom_Complet : string;
+  @Column()
+  email: string;
 
-    @Column()
-    bio : string ;
+  @Column()
+  password: string;
 
-    @OneToMany( type => Formation , formation => formation.formateur)
-    formations : Formation[];
+  @Column()
+  bio: string;
 
-
+  @OneToMany((type) => Formation, (formation) => formation.formateur)
+  formations: Formation[];
 }

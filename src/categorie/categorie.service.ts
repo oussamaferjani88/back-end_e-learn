@@ -22,7 +22,7 @@ export class CategorieService {
     return this.catRep.find({ relations: ['formations'] });
   }
 
-  async findOne(id: number) {
+  async findOne(id : number) {
     const cat: Categorie = await this.catRep.findOne(id);
     return cat;
   }

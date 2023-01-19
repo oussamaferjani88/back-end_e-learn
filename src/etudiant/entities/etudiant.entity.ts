@@ -7,7 +7,7 @@ export class Etudiant {
     id: number;
 
     @Column()
-    Nom_complet:string;
+    nom_complet:string;
 
     @Column()
     email : string;

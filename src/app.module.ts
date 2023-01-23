@@ -15,21 +15,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     AuthModule,
     CategorieModule,
     AchatModule,
-    ConfigModule.forRoot({ isGlobal: true, }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-    type : 'postgres',
-    host :"127.0.0.1" ,
-    port :5432 ,
-    username : "postgres",
-    password : "oussama",
-    database : "e-learn",
-    // autoLoadEntities : true,
-    // synchronize : true,
-
-
-
+      type: 'postgres',
+      host: '127.0.0.1',
+      port: 5432,
+      username: 'postgres',
+      password: 'oussama',
+      database: 'e-learn',
+      autoLoadEntities: true,
+      synchronize: true,
+      entities: ['dist/**/*.entity.js'],
     }),
-  ]
-
+  ],
 })
-export class AppModule { }
+export class AppModule {}

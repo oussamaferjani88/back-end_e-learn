@@ -4,7 +4,7 @@ import { UpdateCategorieDto } from './dto/update-categorie.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Categorie } from './entities/categorie.entity';
 import { Repository } from 'typeorm';
-
+import { equal } from 'assert';
 
 @Injectable()
 export class CategorieService {
@@ -13,20 +13,18 @@ export class CategorieService {
     private catRep: Repository<Categorie>,
   ) {}
 
-
   create(createCategorieDto: CreateCategorieDto) {
-      return this.catRep.save(createCategorieDto);
+    return this.catRep.save(createCategorieDto);
   }
 
   findAll() {
     return this.catRep.find({ relations: ['formations'] });
   }
 
-  async findOne(id : number) {
+  async findOne(id: number) {
     const cat: Categorie = await this.catRep.findOne(id);
     return cat;
   }
-
 
   findByCategorie() {
     return this.catRep.find({ relations: ['formations'] });

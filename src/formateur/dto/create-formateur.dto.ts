@@ -1,5 +1,5 @@
 export class CreateFormateurDto {
-  Nom_Complet: string;
+  nom_complet: string;
   email: string;
   password: string;
   bio: string;

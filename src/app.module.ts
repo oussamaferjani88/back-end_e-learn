@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module  } from '@nestjs/common';
 import { AchatModule } from './achat/achat.module';
 import { CategorieModule } from './categorie/categorie.module';
 import { FormateurModule } from './formateur/formateur.module';

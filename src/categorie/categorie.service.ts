@@ -22,9 +22,10 @@ export class CategorieService {
   }
 
   async findOne(id: number) {
-    const cat: Categorie = await this.catRep.findOne(id);
+    const cat: Categorie = await this.catRep.findOne({where: {id: id, }, });
     return cat;
   }
+
 
   findByCategorie() {
     return this.catRep.find({ relations: ['formations'] });

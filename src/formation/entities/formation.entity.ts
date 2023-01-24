@@ -6,7 +6,6 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  OneToOne,
   OneToMany,
 } from 'typeorm';
 
@@ -33,11 +32,11 @@ export class Formation {
   @Column()
   durée: number;
 
-  @Column()
-  video: string;
+  // @Column()
+  // video: string;
 
-  @Column()
-  document: string;
+  // @Column()
+  // document: string;
 
   @ManyToOne((type) => Formateur, (formateur) => formateur.formations)
   formateur: Formateur;

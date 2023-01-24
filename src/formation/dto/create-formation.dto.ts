@@ -5,6 +5,6 @@ export class CreateFormationDto {
   note: string;
   prix: string;
   durée: number;
-  video: string;
-  document: string;
+  // video: string;
+  // document: string;
 }

@@ -14,7 +14,7 @@ export class Formateur {
   id: number;
 
   @Column()
-  Nom_Complet: string;
+  nom_complet: string;
 
   @Column()
   email: string;

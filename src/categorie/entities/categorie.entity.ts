@@ -11,9 +11,6 @@ export class Categorie {
     @Column()
     nomCat : string ; 
 
-    @OneToMany(type => Formation , formation => formation.categorie )
+    @OneToMany(type => Formation , formation => formation.categorie , {onDelete: 'CASCADE',})
     formations : Formation[];
-
-
-
 }

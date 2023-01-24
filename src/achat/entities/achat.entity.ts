@@ -15,7 +15,7 @@ export class Achat {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'real' })
+  @Column()
   prix: string;
 
   @CreateDateColumn()

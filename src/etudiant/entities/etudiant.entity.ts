@@ -1,5 +1,5 @@
 import { Achat } from 'src/achat/entities/achat.entity';
-import { Entity , Column , PrimaryGeneratedColumn, ManyToOne, OneToOne, OneToMany, CreateDateColumn } from "typeorm";
+import { Entity , Column , PrimaryGeneratedColumn, OneToMany } from "typeorm";
 
 @Entity()
 export class Etudiant {
@@ -7,7 +7,7 @@ export class Etudiant {
     id: number;
 
     @Column()
-    Nom_complet:string;
+    nom_complet:string;
 
     @Column()
     email : string;

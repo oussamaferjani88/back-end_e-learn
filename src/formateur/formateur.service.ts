@@ -7,6 +7,9 @@ import { Formateur } from './entities/formateur.entity';
 
 @Injectable()
 export class FormateurService {
+  findByEmail(email: string) {
+    return this.formateurRep.findOne({ where: { email } });
+  }
   constructor(
     @InjectRepository(Formateur)
     private formateurRep: Repository<Formateur>,

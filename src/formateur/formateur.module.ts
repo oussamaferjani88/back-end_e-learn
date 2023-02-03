@@ -8,5 +8,6 @@ import { Formateur } from './entities/formateur.entity';
   imports: [TypeOrmModule.forFeature([Formateur])],
   controllers: [FormateurController],
   providers: [FormateurService],
+  exports: [FormateurService],
 })
 export class FormateurModule {}

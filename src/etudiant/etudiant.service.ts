@@ -7,6 +7,9 @@ import { Etudiant } from './entities/etudiant.entity';
 
 @Injectable()
 export class EtudiantService {
+  findByEmail(email: string) {
+    return this.etudRep.findOne({ where: { email } });
+  }
   constructor(
     @InjectRepository(Etudiant)
     private etudRep: Repository<Etudiant>,

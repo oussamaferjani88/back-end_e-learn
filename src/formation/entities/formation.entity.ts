@@ -1,6 +1,7 @@
 import { Achat } from 'src/achat/entities/achat.entity';
 import { Categorie } from 'src/categorie/entities/categorie.entity';
 import { Formateur } from 'src/formateur/entities/formateur.entity';
+import { Video } from 'src/video/entities/video.entity';
 import {
   Entity,
   Column,
@@ -46,4 +47,10 @@ export class Formation {
 
   @ManyToOne((type) => Categorie, (categorie) => categorie.formations)
   categorie: Categorie;
+
+  @OneToMany((type)=> Video, (video) => video.formation)
+  videos : Video[];
+
+
+  
 }

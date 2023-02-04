@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { EtudiantModule } from './etudiant/etudiant.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { VideoModule } from './video/video.module';
 @Module({
   imports: [
     EtudiantModule,
@@ -15,6 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     AuthModule,
     CategorieModule,
     AchatModule,
+    VideoModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -27,6 +29,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
       entities: ['dist/**/*.entity.js'],
     }),
+
   ],
 })
 export class AppModule {}

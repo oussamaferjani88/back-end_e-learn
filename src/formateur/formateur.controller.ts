@@ -31,4 +31,20 @@ export class FormateurController {
   remove(@Param('id') id: string) {
     return this.formateurService.remove(+id);
   }
+
+
+
+  @Post('login')
+  async login(@Body() payload: { nom_complet: string, password: string }): Promise<{ token: string }> {
+    const { nom_complet, password } = payload;
+    const token = await this.formateurService.login(nom_complet, password);
+    return { token };
+  }
+
+
+
+
+
+
+
 }

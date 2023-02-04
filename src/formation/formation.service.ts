@@ -11,6 +11,7 @@ export class FormationService {
     @InjectRepository(Formation)
     private formationRep: Repository<Formation>,
   ) {}
+  
   create(createFormationDto: CreateFormationDto) {
     return this.formationRep.save(createFormationDto);
   }

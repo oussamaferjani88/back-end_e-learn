@@ -29,9 +29,6 @@ export class Formation {
   @Column({ type: 'real' })
   prix: string;
 
-  @Column()
-  durée: number;
-
   // @Column()
   // video: string;
 

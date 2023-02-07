@@ -16,6 +16,6 @@ description: string;
 langue: string;
 coverImage: string;
 prix: number;
-formateurId: Formateur;
+formateurId: number;
 categorie: Categorie;
 }

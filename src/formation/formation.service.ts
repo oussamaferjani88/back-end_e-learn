@@ -17,7 +17,11 @@ export class FormationService {
   ) {}
   
   async create(createFormationDto: CreateFormationDto) {
-    const formateur = await this.formateurRep.findOne(createFormationDto.formateurId);
+
+    const formateur = await this.formateurRep.findOne({ where: { id: createFormationDto.formateurId } });
+    if (!formateur) {
+      throw new Error(`Formateur with id "${createFormationDto.formateurId}" not found.`);
+    }
     const formation = this.formationRep.create({
       ...createFormationDto,
       formateur
@@ -29,6 +33,8 @@ export class FormationService {
   findAll() {
     return this.formationRep.find();
   }
+
+
 
   findOne(id: number) {
     return this.formationRep.findOne({ where: { id } });

@@ -23,7 +23,7 @@ import { VideoModule } from './video/video.module';
       host: '127.0.0.1',
       port: 5432,
       username: 'postgres',
-      password: 'karem',
+      password: 'oussama',
       database: 'e-learn',
       autoLoadEntities: true,
       synchronize: true,

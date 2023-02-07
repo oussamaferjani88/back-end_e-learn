@@ -21,9 +21,9 @@ export class Achat {
   @CreateDateColumn()
   date_achat: Date;
 
-  @ManyToOne((type) => Formation, (formation) => formation.achats)
-  formation: Formation;
+  // @ManyToOne((type) => Formation, (formation) => formation.achats)
+  // formation: Formation;
 
-  @ManyToOne((type) => Etudiant, (etudiant) => etudiant.achats)
-  etudiant: Etudiant;
+  // @ManyToOne((type) => Etudiant, (etudiant) => etudiant.achats)
+  // etudiant: Etudiant;
 }

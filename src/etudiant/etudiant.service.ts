@@ -32,4 +32,18 @@ export class EtudiantService {
   remove(id: number) {
     return this.etudRep.delete(id);
   }
+
+  async login(nom_complet: string, password: string): Promise<string> {
+    const etudiant = await this.etudRep.findOne({ where: { nom_complet } });
+    if (!etudiant) {
+      throw new Error('Invalid credentials');
+    }
+    if (password !== etudiant.password) {
+      throw new Error('Invalid credentials');
+    }
+    return 'secret-token';
+  }
+
+
+
 }

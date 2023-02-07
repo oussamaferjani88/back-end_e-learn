@@ -1,6 +1,7 @@
 import { Achat } from 'src/achat/entities/achat.entity';
 import { Categorie } from 'src/categorie/entities/categorie.entity';
 import { Formateur } from 'src/formateur/entities/formateur.entity';
+import { Video } from 'src/video/entities/video.entity';
 import {
   Entity,
   Column,
@@ -24,9 +25,10 @@ export class Formation {
   langue: string;
 
   @Column()
-  note: string;
+  coverImage: string;
 
   @Column({ type: 'real' })
+<<<<<<< HEAD
   prix: string;
 
   // @Column()
@@ -34,13 +36,22 @@ export class Formation {
 
   // @Column()
   // document: string;
+=======
+  prix: number;
+>>>>>>> refs/remotes/origin/master
 
   @ManyToOne((type) => Formateur, (formateur) => formateur.formations)
   formateur: Formateur;
 
-  @OneToMany((type) => Achat, (achat) => achat.formation)
-  achats: Achat[];
+  // @OneToMany((type) => Achat, (achat) => achat.formation)
+  // achats: Achat[];
 
   @ManyToOne((type) => Categorie, (categorie) => categorie.formations)
   categorie: Categorie;
+
+  @OneToMany((type)=> Video, (video) => video.formation)
+  videos : Video[];
+
+
+  
 }

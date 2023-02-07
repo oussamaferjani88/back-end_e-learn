@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
 import { FormateurService } from './formateur.service';
 import { CreateFormateurDto } from './dto/create-formateur.dto';
 import { UpdateFormateurDto } from './dto/update-formateur.dto';
@@ -31,4 +31,19 @@ export class FormateurController {
   remove(@Param('id') id: string) {
     return this.formateurService.remove(+id);
   }
+
+
+
+  @Post('login')
+  async login(@Request() req) {
+    const { nom_complet, password } = req.body;
+    return await this.formateurService.login(nom_complet, password);
+  }
+
+
+
+
+
+
+
 }

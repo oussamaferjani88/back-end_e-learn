@@ -16,8 +16,8 @@ export class Etudiant {
     password : string ;
 
 
-    @OneToMany(type => Achat,achat => achat.etudiant)
-    achats : Achat[];
+    // @OneToMany(type => Achat,achat => achat.etudiant)
+    // achats : Achat[];
 
 
 }

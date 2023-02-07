@@ -22,9 +22,12 @@ export class Formateur {
   @Column()
   password: string;
 
-  @Column()
-  bio: string;
+  // @Column()
+  // bio: string;
 
   @OneToMany((type) => Formation, (formation) => formation.formateur)
   formations: Formation[];
+
+
+
 }

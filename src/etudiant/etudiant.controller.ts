@@ -6,7 +6,7 @@ import { UpdateEtudiantDto } from './dto/update-etudiant.dto';
 @Controller('etudiant')
 export class EtudiantController {
   constructor(private readonly etudiantService: EtudiantService) {}
-
+  
   @Post()
   create(@Body() createEtudiantDto: CreateEtudiantDto) {
     return this.etudiantService.create(createEtudiantDto);
@@ -31,4 +31,16 @@ export class EtudiantController {
   remove(@Param('id') id: string) {
     return this.etudiantService.remove(+id);
   }
+
+
+
+  @Post('login')
+  async login(@Body() payload: { nom_complet: string, password: string }): Promise<{ token: string }> {
+    const { nom_complet, password } = payload;
+    const token = await this.etudiantService.login(nom_complet, password);
+    return { token };
+  }
+
+
+
 }

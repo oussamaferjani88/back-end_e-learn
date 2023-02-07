@@ -4,17 +4,27 @@ import { Repository } from 'typeorm';
 import { CreateFormationDto } from './dto/create-formation.dto';
 import { UpdateFormationDto } from './dto/update-formation.dto';
 import { Formation } from './entities/formation.entity';
+import { Formateur } from 'src/formateur/entities/formateur.entity';
 
 @Injectable()
 export class FormationService {
   constructor(
     @InjectRepository(Formation)
     private formationRep: Repository<Formation>,
+
+    @InjectRepository(Formateur)
+    private formateurRep: Repository<Formateur>,
   ) {}
   
-  create(createFormationDto: CreateFormationDto) {
-    return this.formationRep.save(createFormationDto);
+  async create(createFormationDto: CreateFormationDto) {
+    const formateur = await this.formateurRep.findOne(createFormationDto.formateurId);
+    const formation = this.formationRep.create({
+      ...createFormationDto,
+      formateur
+    });
+    return this.formationRep.save(formation);
   }
+  
 
   findAll() {
     return this.formationRep.find();
@@ -32,3 +42,4 @@ export class FormationService {
     return this.formationRep.delete(id);
   }
 }
+

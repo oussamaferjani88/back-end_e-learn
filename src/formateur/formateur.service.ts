@@ -33,15 +33,16 @@ export class FormateurService {
 
 
 
-  async login(nom_complet: string, password: string): Promise<string> {
-    const etudiant = await this.formateurRep.findOne({ where: { nom_complet } });
-    if (!etudiant) {
+  async login(nom_complet: string, pwd: string): Promise<any> {
+    const formateur = await this.formateurRep.findOne({ where: { nom_complet } });
+    if (!formateur) {
       throw new Error('Invalid credentials');
     }
-    if (password !== etudiant.password) {
+    if (pwd !== formateur.password) {
       throw new Error('Invalid credentials');
     }
-    return 'secret-token';
+    const {password, ...res} = formateur;
+    return res;
   }
 
 

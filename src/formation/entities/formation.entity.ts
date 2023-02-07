@@ -25,25 +25,16 @@ export class Formation {
   langue: string;
 
   @Column()
-  note: string;
+  coverImage: string;
 
   @Column({ type: 'real' })
-  prix: string;
-
-  @Column()
-  durée: number;
-
-  // @Column()
-  // video: string;
-
-  // @Column()
-  // document: string;
+  prix: number;
 
   @ManyToOne((type) => Formateur, (formateur) => formateur.formations)
   formateur: Formateur;
 
-  @OneToMany((type) => Achat, (achat) => achat.formation)
-  achats: Achat[];
+  // @OneToMany((type) => Achat, (achat) => achat.formation)
+  // achats: Achat[];
 
   @ManyToOne((type) => Categorie, (categorie) => categorie.formations)
   categorie: Categorie;

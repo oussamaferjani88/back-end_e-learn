@@ -19,14 +19,14 @@ export class FormationController {
   constructor(private readonly formationService: FormationService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
   @Header('Content-Type', 'multipart/form-data')
+  @UseInterceptors(FileInterceptor('coverImage'))
   create(
     @UploadedFile() file: Express.Multer.File,
     @Body() createFormationDto: CreateFormationDto,
   ) {
-    console.log(file);
-    return this.formationService.create(createFormationDto);
+    console.log('my file ' + JSON.stringify(file));
+    return this.formationService.create(createFormationDto, file.filename);
   }
 
   @Get()

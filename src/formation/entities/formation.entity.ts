@@ -28,7 +28,13 @@ export class Formation {
   coverImage: string;
 
   @Column({ type: 'real' })
-  prix: number;
+  prix: string;
+
+  // @Column()
+  // video: string;
+
+  // @Column()
+  // document: string;
 
   @ManyToOne((type) => Formateur, (formateur) => formateur.formations)
   formateur: Formateur;
@@ -39,9 +45,6 @@ export class Formation {
   @ManyToOne((type) => Categorie, (categorie) => categorie.formations)
   categorie: Categorie;
 
-  @OneToMany((type)=> Video, (video) => video.formation)
-  videos : Video[];
-
-
-  
+  @OneToMany((type) => Video, (video) => video.formation)
+  videos: Video[];
 }

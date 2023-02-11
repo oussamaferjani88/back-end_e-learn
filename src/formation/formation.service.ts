@@ -5,6 +5,7 @@ import { CreateFormationDto } from './dto/create-formation.dto';
 import { UpdateFormationDto } from './dto/update-formation.dto';
 import { Formation } from './entities/formation.entity';
 import { Formateur } from 'src/formateur/entities/formateur.entity';
+import { FormateurService } from 'src/formateur/formateur.service';
 
 @Injectable()
 export class FormationService {
@@ -14,19 +15,21 @@ export class FormationService {
 
     @InjectRepository(Formateur)
     private formateurRep: Repository<Formateur>,
-  ) {}
-  
-  async create(createFormationDto: CreateFormationDto) {
 
-    const formateur = await this.formateurRep.findOne({ where: { id: createFormationDto.formateurId } });
-    if (!formateur) {
-      throw new Error(`Formateur with id "${createFormationDto.formateurId}" not found.`);
-    }
-    const formation = this.formationRep.create({
-      ...createFormationDto,
-      formateur
-    });
-    return this.formationRep.save(formation);
+    private formateurService: FormateurService,
+  ) {}
+
+  async create(createFormationDto: CreateFormationDto, filename: string) {
+    const { formateurId, ...rest } = createFormationDto;
+    console.log('formateurId = ' + formateurId);
+    const formateur = await this.formateurService.findOne(formateurId);
+
+    console.log('formateur = ' + formateur);
+    const newForm = await this.formationRep.create(rest);
+    newForm.coverImage = filename;
+    newForm.formateur = formateur;
+    console.log(newForm);
+    return this.formationRep.save(newForm);
   }
   
 

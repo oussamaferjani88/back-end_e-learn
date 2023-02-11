@@ -11,11 +11,10 @@ import { Formateur } from 'src/formateur/entities/formateur.entity';
 import { Categorie } from 'src/categorie/entities/categorie.entity';
 
 export class CreateFormationDto {
-titre: string;
-description: string;
-langue: string;
-coverImage: string;
-prix: number;
-formateurId: number;
-categorie: Categorie;
+  titre: string;
+  description: string;
+  langue: string;
+  prix: string;
+  formateurId: number;
+  categorie: Categorie;
 }

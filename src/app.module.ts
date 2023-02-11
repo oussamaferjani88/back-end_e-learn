@@ -1,4 +1,4 @@
-import { Module  } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AchatModule } from './achat/achat.module';
 import { CategorieModule } from './categorie/categorie.module';
 import { FormateurModule } from './formateur/formateur.module';
@@ -8,6 +8,9 @@ import { EtudiantModule } from './etudiant/etudiant.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { VideoModule } from './video/video.module';
+import { AppService } from './app/app.service';
+import { AppController } from './app/app.controller';
+import { MulterModule } from '@nestjs/platform-express';
 @Module({
   imports: [
     EtudiantModule,
@@ -29,7 +32,11 @@ import { VideoModule } from './video/video.module';
       synchronize: true,
       entities: ['dist/**/*.entity.js'],
     }),
-
+    MulterModule.register({
+      dest: './uploads',
+    }),
   ],
+  providers: [AppService],
+  controllers: [AppController],
 })
 export class AppModule {}

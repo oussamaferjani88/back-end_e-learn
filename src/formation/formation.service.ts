@@ -6,6 +6,8 @@ import { UpdateFormationDto } from './dto/update-formation.dto';
 import { Formation } from './entities/formation.entity';
 import { Formateur } from 'src/formateur/entities/formateur.entity';
 import { FormateurService } from 'src/formateur/formateur.service';
+import { Video } from 'src/video/entities/video.entity';
+import { VideoService } from 'src/video/video.service';
 
 @Injectable()
 export class FormationService {
@@ -17,27 +19,38 @@ export class FormationService {
     private formateurRep: Repository<Formateur>,
 
     private formateurService: FormateurService,
+    @InjectRepository(Video)
+    private videoRep: Repository<Video>,
   ) {}
 
-  async create(createFormationDto: CreateFormationDto, filename: string) {
+  async create(
+    createFormationDto: CreateFormationDto,
+    image: string,
+    videoUploadName: string,
+  ) {
+    if (image === undefined || videoUploadName === undefined) return false;
+    console.log(image + ' and ' + videoUploadName);
+
     const { formateurId, ...rest } = createFormationDto;
     console.log('formateurId = ' + formateurId);
     const formateur = await this.formateurService.findOne(formateurId);
 
     console.log('formateur = ' + formateur);
     const newForm = await this.formationRep.create(rest);
-    newForm.coverImage = filename;
+    newForm.coverImage = image;
+    const video = await this.videoRep.create(createFormationDto.video);
+    video.fileName = videoUploadName;
+    console.log('video = ' + JSON.stringify(video));
+    newForm.videos = [];
+    newForm.videos.push(video);
     newForm.formateur = formateur;
     console.log(newForm);
     return this.formationRep.save(newForm);
   }
-  
 
   findAll() {
     return this.formationRep.find({ relations: ['formateur'] });
   }
-
-
 
   findOne(id: number) { 
     return this.formationRep.findOne({ where: { id } });
@@ -51,4 +64,3 @@ export class FormationService {
     return this.formationRep.delete(id);
   }
 }
-

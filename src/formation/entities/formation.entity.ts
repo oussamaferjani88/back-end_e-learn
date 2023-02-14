@@ -31,9 +31,6 @@ export class Formation {
   prix: string;
 
   // @Column()
-  // video: string;
-
-  // @Column()
   // document: string;
 
   @ManyToOne((type) => Formateur, (formateur) => formateur.formations)
@@ -45,6 +42,6 @@ export class Formation {
   @ManyToOne((type) => Categorie, (categorie) => categorie.formations)
   categorie: Categorie;
 
-  @OneToMany((type) => Video, (video) => video.formation)
+  @OneToMany((type) => Video, (video) => video.formation, { cascade: true })
   videos: Video[];
 }

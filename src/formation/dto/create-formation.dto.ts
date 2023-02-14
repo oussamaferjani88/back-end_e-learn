@@ -9,6 +9,7 @@
 // }
 import { Formateur } from 'src/formateur/entities/formateur.entity';
 import { Categorie } from 'src/categorie/entities/categorie.entity';
+import { Video } from 'src/video/entities/video.entity';
 
 export class CreateFormationDto {
   titre: string;
@@ -17,4 +18,5 @@ export class CreateFormationDto {
   prix: string;
   formateurId: number;
   categorie: Categorie;
+  video: Video;
 }

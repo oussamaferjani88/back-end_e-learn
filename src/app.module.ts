@@ -26,7 +26,7 @@ import { MulterModule } from '@nestjs/platform-express';
       host: '127.0.0.1',
       port: 5432,
       username: 'postgres',
-      password: 'oussama',
+      password: 'karem',
       database: 'e-learn',
       autoLoadEntities: true,
       synchronize: true,

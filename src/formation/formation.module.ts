@@ -7,11 +7,14 @@ import { MulterModule } from '@nestjs/platform-express/multer';
 import { Repository } from 'typeorm';
 import { Formateur } from 'src/formateur/entities/formateur.entity';
 import { FormateurModule } from 'src/formateur/formateur.module';
+import { VideoModule } from 'src/video/video.module';
+import { Video } from 'src/video/entities/video.entity';
 
 @Module({
   imports: [
     FormateurModule,
-    TypeOrmModule.forFeature([Formation]),
+    VideoModule,
+    TypeOrmModule.forFeature([Formation, Video]),
     MulterModule.register({
       dest: './uploads',
     }),

@@ -20,9 +20,11 @@ import {
 } from '@nestjs/platform-express';
 import {
   Header,
+  Req,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common/decorators';
+import * as fs from 'fs';
 
 @Controller('formation')
 export class FormationController {
@@ -76,10 +78,42 @@ export class FormationController {
     res.contentType('image/jpeg');
     res.send(image);
   }
+
   @Get('video/:filename')
-  @Header('Access-Control-Allow-Origin', '*')
-  async serveVideo(@Res() res: Response, @Param('filename') filename: string) {
-    const video = readFileSync(`./uploads/${filename}`);
-    res.send(video);
+  async streamVideo(
+    @Req() req,
+    @Res() res,
+    @Param('filename') filename: string,
+  ) {
+    console.log('filename = ' + filename);
+
+    const path = `./uploads/${filename}`;
+    const stat = fs.statSync(path);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+
+    if (range) {
+      const parts = range.replace(/bytes=/, '').split('-');
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+      const chunksize = end - start + 1;
+      const file = fs.createReadStream(path, { start, end });
+      const head = {
+        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Type': 'video/mp4',
+      };
+
+      res.writeHead(206, head);
+      file.pipe(res);
+    } else {
+      const head = {
+        'Content-Length': fileSize,
+        'Content-Type': 'video/mp4',
+      };
+      res.writeHead(200, head);
+      fs.createReadStream(path).pipe(res);
+    }
   }
 }

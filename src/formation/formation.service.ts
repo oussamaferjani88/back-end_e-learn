@@ -34,12 +34,12 @@ export class FormationService {
   
 
   findAll() {
-    return this.formationRep.find();
+    return this.formationRep.find({ relations: ['formateur'] });
   }
 
 
 
-  findOne(id: number) {
+  findOne(id: number) { 
     return this.formationRep.findOne({ where: { id } });
   }
 

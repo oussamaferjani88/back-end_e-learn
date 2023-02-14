@@ -21,7 +21,4 @@ export class Video {
     @ManyToOne((type) => Formation, (formation) => formation.videos)
     formation: Formation;
 
-
-
-
 }

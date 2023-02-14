@@ -14,22 +14,37 @@ import { readFileSync } from 'fs';
 import { FormationService } from './formation.service';
 import { CreateFormationDto } from './dto/create-formation.dto';
 import { UpdateFormationDto } from './dto/update-formation.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Header, UseInterceptors } from '@nestjs/common/decorators';
+import {
+  FileFieldsInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
+import {
+  Header,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common/decorators';
 
 @Controller('formation')
 export class FormationController {
   constructor(private readonly formationService: FormationService) {}
 
   @Post()
-  @Header('Content-Type', 'multipart/form-data')
-  @UseInterceptors(FileInterceptor('coverImage'))
-  create(
-    @UploadedFile() file: Express.Multer.File,
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'coverImage', maxCount: 1 },
+      { name: 'vid', maxCount: 1 },
+    ]),
+  )
+  async create(
+    @UploadedFiles()
+    files: { coverImage: Express.Multer.File[]; vid: Express.Multer.File[] },
     @Body() createFormationDto: CreateFormationDto,
   ) {
-    console.log('my file ' + JSON.stringify(file));
-    return this.formationService.create(createFormationDto, file.filename);
+    return this.formationService.create(
+      createFormationDto,
+      files.coverImage.find((f) => f.fieldname == 'coverImage').filename,
+      files.vid.find((f) => f.fieldname == 'vid').filename,
+    );
   }
 
   @Get()
@@ -61,7 +76,10 @@ export class FormationController {
     res.contentType('image/jpeg');
     res.send(image);
   }
-
-
-
+  @Get('video/:filename')
+  @Header('Access-Control-Allow-Origin', '*')
+  async serveVideo(@Res() res: Response, @Param('filename') filename: string) {
+    const video = readFileSync(`./uploads/${filename}`);
+    res.send(video);
+  }
 }

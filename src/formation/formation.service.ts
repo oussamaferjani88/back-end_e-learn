@@ -49,11 +49,11 @@ export class FormationService {
   }
 
   findAll() {
-    return this.formationRep.find();
+    return this.formationRep.find({ relations: ['videos'] });
   }
 
   findOne(id: number) {
-    return this.formationRep.findOne({ where: { id } });
+    return this.formationRep.findOne({ where: { id }, relations: ['videos'] });
   }
 
   update(id: number, updateFormationDto: UpdateFormationDto) {

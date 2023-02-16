@@ -22,6 +22,12 @@ export class Video {
   @Column({ nullable: true })
   description: string;
 
-  @ManyToOne((type) => Formation, (formation) => formation.videos)
-  formation: Formation;
+    @ManyToOne((type) => Formation, (formation) => formation.videos)
+    formation: Formation;
+
+
+
+
 }
+
+

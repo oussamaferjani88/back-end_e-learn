@@ -7,7 +7,6 @@ import { Formation } from './entities/formation.entity';
 import { Formateur } from 'src/formateur/entities/formateur.entity';
 import { FormateurService } from 'src/formateur/formateur.service';
 import { Video } from 'src/video/entities/video.entity';
-import { VideoService } from 'src/video/video.service';
 
 @Injectable()
 export class FormationService {
@@ -49,7 +48,7 @@ export class FormationService {
   }
 
   findAll() {
-    return this.formationRep.find({ relations: ['videos'] });
+    return this.formationRep.find({ relations: ['formateur', 'videos'] });
   }
 
   findOne(id: number) {

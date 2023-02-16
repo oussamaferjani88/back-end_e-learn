@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete , Query} from '@nestjs/common';
 import { VideoService } from './video.service';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
@@ -12,11 +12,12 @@ export class VideoController {
     return this.videoService.create(createVideoDto);
   }
 
+
   @Get()
   findAll() {
     return this.videoService.findAll();
   }
-
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.videoService.findOne(+id);
@@ -26,6 +27,12 @@ export class VideoController {
   update(@Param('id') id: string, @Body() updateVideoDto: UpdateVideoDto) {
     return this.videoService.update(+id, updateVideoDto);
   }
+
+  @Get()
+  async getVideosByFormationId(@Query('formationId') formationId: number) {
+    return this.videoService.getVideosByFormationId(formationId);
+  }
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {

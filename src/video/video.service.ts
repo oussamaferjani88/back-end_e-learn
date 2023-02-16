@@ -11,16 +11,18 @@ export class VideoService {
     @InjectRepository(Video)
     private videoRep: Repository<Video>,
   ) {}
-  
-
-
   create(createVideoDto: CreateVideoDto) {
     return this.videoRep.save(createVideoDto);
+  }
+    
+  async getVideosByFormationId(formationId: number): Promise<Video[]> {
+    return this.videoRep.find({ where: { formation: { id: formationId } } });
   }
 
   findAll() {
     return this.videoRep.find();
   }
+
 
   findOne(id: number) {
     return this.videoRep.findOne({ where: { id } });

@@ -1,3 +1,5 @@
 export class CreateVideoDto {
-    Nom_video : string;
+  Nom_video: string;
+  fileName: string;
+  description: string;
 }

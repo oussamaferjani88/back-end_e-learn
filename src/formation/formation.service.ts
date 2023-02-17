@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFormationDto } from './dto/create-formation.dto';
@@ -7,6 +7,7 @@ import { Formation } from './entities/formation.entity';
 import { Formateur } from 'src/formateur/entities/formateur.entity';
 import { FormateurService } from 'src/formateur/formateur.service';
 import { Video } from 'src/video/entities/video.entity';
+import { CreateVideoDto } from 'src/video/dto/create-video.dto';
 
 @Injectable()
 export class FormationService {
@@ -25,10 +26,10 @@ export class FormationService {
   async create(
     createFormationDto: CreateFormationDto,
     image: string,
-    videoUploadName: string,
+    uploadedVideos: CreateVideoDto[],
   ) {
-    if (image === undefined || videoUploadName === undefined) return false;
-    console.log(image + ' and ' + videoUploadName);
+    if (image === undefined || uploadedVideos === undefined) return false;
+    console.log(image + ' and ' + uploadedVideos);
 
     const { formateurId, ...rest } = createFormationDto;
     console.log('formateurId = ' + formateurId);
@@ -37,14 +38,43 @@ export class FormationService {
     console.log('formateur = ' + formateur);
     const newForm = await this.formationRep.create(rest);
     newForm.coverImage = image;
+    /*
     const video = await this.videoRep.create(createFormationDto.video);
     video.fileName = videoUploadName;
     console.log('video = ' + JSON.stringify(video));
+*/
     newForm.videos = [];
-    newForm.videos.push(video);
+    for (let v of uploadedVideos) {
+      var video = await this.videoRep.create(createFormationDto.video);
+    }
+    newForm.videos.push();
     newForm.formateur = formateur;
+
     console.log(newForm);
     return this.formationRep.save(newForm);
+  }
+
+  async uploadCoverImage(coverImage: string, id: number) {
+    return this.formationRep.update(id, { coverImage: coverImage });
+  }
+
+  async uploadVideos(videos: CreateVideoDto[], id: number) {
+    /*
+    first we need to get the formation id so before uploading the videos 
+    you need to be sure that the needed formation is saved in the db 
+    if not an error message will pop up in the response :)
+    */
+    const formation = await this.findOne(id);
+    // we need to initialize the videos array property
+    formation.videos = [];
+    /*
+    now we need to prepare the videos to be saved in the db
+    */
+    for (let v of videos) {
+      let createdVideo = await this.videoRep.create(v);
+      formation.videos.push(createdVideo);
+    }
+    return await this.formationRep.save(formation);
   }
 
   findAll() {

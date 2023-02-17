@@ -8,6 +8,9 @@ import {
   Delete,
   UploadedFile,
   Res,
+  CanActivate,
+  ExecutionContext,
+  NotFoundException,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { readFileSync } from 'fs';
@@ -16,28 +19,48 @@ import { CreateFormationDto } from './dto/create-formation.dto';
 import { UpdateFormationDto } from './dto/update-formation.dto';
 import {
   FileFieldsInterceptor,
+  FileInterceptor,
   FilesInterceptor,
 } from '@nestjs/platform-express';
 import {
   Header,
+  Injectable,
   Req,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common/decorators';
 import * as fs from 'fs';
+import { CreateVideoDto } from 'src/video/dto/create-video.dto';
+
+@Injectable()
+export class isFormationExistGuard implements CanActivate {
+  constructor(private formationService: FormationService) {}
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const req = context.switchToHttp().getRequest();
+    const idFormation = req.params.id;
+    console.log('#guard, formation id = ' + idFormation);
+    const f = await this.formationService.findOne(idFormation);
+    if (!f)
+      throw new NotFoundException(`Formation with ID ${idFormation} not found`);
+    return true;
+  }
+}
+
+//////////////////////////////////////////////////////////
 
 @Controller('formation')
 export class FormationController {
   constructor(private readonly formationService: FormationService) {}
 
-  @Post()
+  /* @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'coverImage', maxCount: 1 },
-      { name: 'vid', maxCount: 1 },
+      { name: 'vid' },
     ]),
   )
-  async create(
+  /* async create(
     @UploadedFiles()
     files: { coverImage: Express.Multer.File[]; vid: Express.Multer.File[] },
     @Body() createFormationDto: CreateFormationDto,
@@ -45,8 +68,51 @@ export class FormationController {
     return this.formationService.create(
       createFormationDto,
       files.coverImage.find((f) => f.fieldname == 'coverImage').filename,
-      files.vid.find((f) => f.fieldname == 'vid').filename,
+      files.vid,
     );
+  }*/
+
+  // upload image
+
+  @Post('coverImage/:id')
+  @UseInterceptors(FileInterceptor('coverImage'))
+  @UseGuards(isFormationExistGuard)
+  uploadCoverImage(
+    @UploadedFile() coverImage: Express.Multer.File,
+    @Param('id') id: string,
+  ) {
+    console.log('coverImage = ' + JSON.stringify(coverImage));
+    return this.formationService.uploadCoverImage(coverImage.filename, +id);
+  }
+
+  @Post('videos/:id')
+  @UseInterceptors(FilesInterceptor('videos'))
+  @UseGuards(isFormationExistGuard)
+
+  // you need to provide an array of videos informations
+  uploadVideos(
+    @UploadedFiles() videos: Express.Multer.File[],
+    @Param('id') id: string,
+    @Body() createVideoDto: CreateVideoDto,
+  ) {
+    console.log(id);
+    console.log(videos);
+    //taking just the filenames from files
+    const videosFilenames = videos.map((f) => f.filename);
+    console.log(videosFilenames);
+    console.log('createVideoDto = ' + JSON.stringify(createVideoDto));
+    const videosDtos: CreateVideoDto[] = [];
+    // assigning each filename to the create dto of a video
+    for (const [index, value] of videosFilenames.entries()) {
+      const v = new CreateVideoDto();
+      v.Nom_video = createVideoDto.Nom_video[index];
+      v.fileName = value;
+      v.description = createVideoDto.description[index];
+      videosDtos.push(v);
+    }
+    console.log('createVideoDto = ' + JSON.stringify(videosDtos));
+
+    return this.formationService.uploadVideos(videosDtos, +id);
   }
 
   @Get()

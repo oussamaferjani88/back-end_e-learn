@@ -53,24 +53,10 @@ export class isFormationExistGuard implements CanActivate {
 export class FormationController {
   constructor(private readonly formationService: FormationService) {}
 
-  /* @Post()
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'coverImage', maxCount: 1 },
-      { name: 'vid' },
-    ]),
-  )
-  /* async create(
-    @UploadedFiles()
-    files: { coverImage: Express.Multer.File[]; vid: Express.Multer.File[] },
-    @Body() createFormationDto: CreateFormationDto,
-  ) {
-    return this.formationService.create(
-      createFormationDto,
-      files.coverImage.find((f) => f.fieldname == 'coverImage').filename,
-      files.vid,
-    );
-  }*/
+  @Post()
+  create(@Body() createFormationDto: CreateFormationDto) {
+    return this.formationService.create(createFormationDto);
+  }
 
   // upload image
 

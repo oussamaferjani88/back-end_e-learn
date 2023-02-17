@@ -23,33 +23,13 @@ export class FormationService {
     private videoRep: Repository<Video>,
   ) {}
 
-  async create(
-    createFormationDto: CreateFormationDto,
-    image: string,
-    uploadedVideos: CreateVideoDto[],
-  ) {
-    if (image === undefined || uploadedVideos === undefined) return false;
-    console.log(image + ' and ' + uploadedVideos);
-
+  async create(createFormationDto: CreateFormationDto) {
     const { formateurId, ...rest } = createFormationDto;
     console.log('formateurId = ' + formateurId);
     const formateur = await this.formateurService.findOne(formateurId);
-
     console.log('formateur = ' + formateur);
     const newForm = await this.formationRep.create(rest);
-    newForm.coverImage = image;
-    /*
-    const video = await this.videoRep.create(createFormationDto.video);
-    video.fileName = videoUploadName;
-    console.log('video = ' + JSON.stringify(video));
-*/
-    newForm.videos = [];
-    for (let v of uploadedVideos) {
-      var video = await this.videoRep.create(createFormationDto.video);
-    }
-    newForm.videos.push();
     newForm.formateur = formateur;
-
     console.log(newForm);
     return this.formationRep.save(newForm);
   }

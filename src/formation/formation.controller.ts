@@ -74,34 +74,32 @@ export class FormationController {
   }
 
   @Post('videos/:id')
-  @UseInterceptors(FilesInterceptor('videos'))
+  @UseInterceptors(FileInterceptor('videos'))
   @UseGuards(isFormationExistGuard)
 
   // you need to provide an array of videos informations
   uploadVideos(
-    @UploadedFiles() videos: Express.Multer.File[],
+    @UploadedFile() video: Express.Multer.File,
     @Param('id') id: string,
-    @Body() createVideoDto: CreateVideoDto[],
+    @Body() createVideoDto: CreateVideoDto,
   ) {
     console.log('createVideoDto = ' + JSON.stringify(createVideoDto));
     console.log(id);
-    console.log('videos = ' + JSON.stringify(videos));
+    console.log('videos = ' + JSON.stringify(video));
     //taking just the filenames from files
-    const videosFilenames = videos.map((f) => f.filename);
-    console.log('videosFilenames = ' + JSON.stringify(videosFilenames));
+    console.log('videosFilenames = ' + JSON.stringify(video.filename));
     console.log(' create video dto = ' + JSON.stringify(createVideoDto));
 
     const videosDtos: CreateVideoDto[] = [];
     // assigning each filename to the create dto of a video
-    for (let i = 0; i < videosFilenames.length; i++) {
-      const v = new CreateVideoDto();
-      v.Nom_video = createVideoDto[i].Nom_video;
-      v.fileName = videosFilenames[i];
-      v.description = createVideoDto[i].description;
-      videosDtos.push(v);
-    }
-    console.log('result = ' + JSON.stringify(videosDtos));
-    return this.formationService.uploadVideos(videosDtos, +id);
+
+    const v = new CreateVideoDto();
+    v.Nom_video = createVideoDto.Nom_video;
+    v.fileName = video.filename;
+    v.description = createVideoDto.description;
+
+    console.log('result = ' + JSON.stringify(v));
+    return this.formationService.uploadVideos(v, +id);
   }
 
   @Get()

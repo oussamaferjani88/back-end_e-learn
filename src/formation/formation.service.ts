@@ -38,7 +38,7 @@ export class FormationService {
     return this.formationRep.update(id, { coverImage: coverImage });
   }
 
-  async uploadVideos(videos: CreateVideoDto[], id: number) {
+  async uploadVideos(video: CreateVideoDto, id: number) {
     /*
     first we need to get the formation id so before uploading the videos 
     you need to be sure that the needed formation is saved in the db 
@@ -47,14 +47,9 @@ export class FormationService {
     const formation = await this.findOne(id);
     // we need to initialize the videos array property
     formation.videos = [];
-    /*
-    now we need to prepare the videos to be saved in the db
-    */
-    for (let v of videos) {
-      console.log(v);
-      let createdVideo = await this.videoRep.create(v);
-      formation.videos.push(createdVideo);
-    }
+
+    let createdVideo = await this.videoRep.create(video);
+    formation.videos.push(createdVideo);
     return await this.formationRep.save(formation);
   }
 

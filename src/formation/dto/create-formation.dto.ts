@@ -18,5 +18,4 @@ export class CreateFormationDto {
   prix: string;
   formateurId: number;
   categorie: Categorie;
-  video: Video;
 }

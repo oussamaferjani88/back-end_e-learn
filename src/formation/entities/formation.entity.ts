@@ -24,7 +24,7 @@ export class Formation {
   @Column()
   langue: string;
 
-  @Column()
+  @Column({ nullable: true })
   coverImage: string;
 
   @Column({ type: 'real' })

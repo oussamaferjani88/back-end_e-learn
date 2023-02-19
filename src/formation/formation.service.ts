@@ -51,6 +51,7 @@ export class FormationService {
     now we need to prepare the videos to be saved in the db
     */
     for (let v of videos) {
+      console.log(v);
       let createdVideo = await this.videoRep.create(v);
       formation.videos.push(createdVideo);
     }

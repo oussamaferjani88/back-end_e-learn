@@ -32,7 +32,7 @@ import {
 } from '@nestjs/common/decorators';
 import * as fs from 'fs';
 import { CreateVideoDto } from 'src/video/dto/create-video.dto';
-
+import { zip } from 'lodash';
 @Injectable()
 export class isFormationExistGuard implements CanActivate {
   constructor(private formationService: FormationService) {}
@@ -54,7 +54,9 @@ export class FormationController {
   constructor(private readonly formationService: FormationService) {}
 
   @Post()
-  create(@Body() createFormationDto: CreateFormationDto) {
+  create(@Body() createFormationDto: any) {
+    //console.log('request = ' + JSON.stringify(creat));
+    console.log('createFormationDto = ' + JSON.stringify(createFormationDto));
     return this.formationService.create(createFormationDto);
   }
 
@@ -79,25 +81,26 @@ export class FormationController {
   uploadVideos(
     @UploadedFiles() videos: Express.Multer.File[],
     @Param('id') id: string,
-    @Body() createVideoDto: CreateVideoDto,
+    @Body() createVideoDto: CreateVideoDto[],
   ) {
+    console.log('createVideoDto = ' + JSON.stringify(createVideoDto));
     console.log(id);
-    console.log(videos);
+    console.log('videos = ' + JSON.stringify(videos));
     //taking just the filenames from files
     const videosFilenames = videos.map((f) => f.filename);
-    console.log(videosFilenames);
-    console.log('createVideoDto = ' + JSON.stringify(createVideoDto));
+    console.log('videosFilenames = ' + JSON.stringify(videosFilenames));
+    console.log(' create video dto = ' + JSON.stringify(createVideoDto));
+
     const videosDtos: CreateVideoDto[] = [];
     // assigning each filename to the create dto of a video
-    for (const [index, value] of videosFilenames.entries()) {
+    for (let i = 0; i < videosFilenames.length; i++) {
       const v = new CreateVideoDto();
-      v.Nom_video = createVideoDto.Nom_video[index];
-      v.fileName = value;
-      v.description = createVideoDto.description[index];
+      v.Nom_video = createVideoDto[i].Nom_video;
+      v.fileName = videosFilenames[i];
+      v.description = createVideoDto[i].description;
       videosDtos.push(v);
     }
-    console.log('createVideoDto = ' + JSON.stringify(videosDtos));
-
+    console.log('result = ' + JSON.stringify(videosDtos));
     return this.formationService.uploadVideos(videosDtos, +id);
   }
 
